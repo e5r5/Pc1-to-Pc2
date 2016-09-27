@@ -1,10 +1,5 @@
 ## Voice messaging system by PTT from Pc1-to-Pc2
 
-##![Hello](http://s22.postimg.org/sv1h58zcx/all.png)
-
-
-##![Hello](http://s17.postimg.org/f3hvzswdb/PC1.png)
-
 ##How to run? 
 - open a python project and run it from Main file(PC1)- Send messages
 - open a python project and run it from pc2 file(PC2)-Receive messages 
@@ -14,3 +9,11 @@
 -Recording by PTT button
 -Send file and play on pc2
 -A confirmation message has been sent!!
+-And much more
+
+##![Hello](http://s22.postimg.org/sv1h58zcx/all.png)
+
+
+##![Hello](http://s17.postimg.org/f3hvzswdb/PC1.png)
+
+
