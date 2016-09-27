@@ -16,4 +16,7 @@
 
 ##![Hello](http://s17.postimg.org/f3hvzswdb/PC1.png)
 
-
+## Import and Use:
+- import: Tkinter,threading,pyaudio,wave,array,os,socket,time,tkMessageBox
+- Microsoft Visual C++ 2008 Redistributable Package (x64)
+- C++ Libraries 
