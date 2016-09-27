@@ -5,11 +5,11 @@
 - open a python project and run it from pc2 file(PC2)-Receive messages 
 
 ##The system can do:
--Record messages and save them on your computer
--Recording by PTT button
--Send file and play on pc2
--A confirmation message has been sent!!
--And much more
+- Record messages and save them on your computer
+- Recording by PTT button
+- Send file and play on pc2
+- A confirmation message has been sent!!
+- And much more
 
 ##![Hello](http://s22.postimg.org/sv1h58zcx/all.png)
 
