@@ -8,14 +8,13 @@ import time
 from array import array
 from os import stat
 import sys
-import Main
+
+
 def GetArrFromWav(name):
     arr = array('B')  # create binary array to hold the wave file
     result = stat(name)  # sample file is in the same folder
     f = open(name, 'rb')  # this will play
     arr.fromfile(f, result.st_size)  # using file size as the array length
-    #print("Length of data: " + str(len(arr)))
-    #print arr
     return arr
 
 def comp2Wav(namefile1,nameFile2):
@@ -45,9 +44,7 @@ while True:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
     s.listen(1)
-
     print('Listening...')
-    #if firstTime:
     conn, addr = s.accept()
     print('Connected by', addr)
     firstTime = False
@@ -55,7 +52,7 @@ while True:
     #os.remove("newfile.wav")
     name = "file"+ str(x) + ".wav"
     #name = "FileBack.wav"
-    outfile = open(name, 'ab')
+    outfile = open(name, 'ab') #binary mode
     while True:
         data = conn.recv(1024)
         if not data: break
@@ -64,13 +61,38 @@ while True:
     conn.close()
     outfile.close()
     print ("Completed.")
-    if(comp2Wav("swapFile.wav",name)):
 
-        os.system('python Main.py')
+    ##if the file that pc1 send is a swap file
+    #pc1 now listening and pc2 will send the last file to pc1
+    if(comp2Wav("swapFile.wav",name)):
+        time.sleep(2)
+        arr = array('B')  # create binary array to hold the wave file
+        nameFileSend = "File" + str(x-1) + ".wav"
+        result = stat(nameFileSend)
+        f = open(nameFileSend, 'rb')  # this will send
+        arr.fromfile(f, result.st_size)  # using file size as the array length
+        # print("Length of data: " + str(len(arr)))
+
+        HOST = 'localhost'  # Loopback to cheak the trans. info use on -IPv4 in TCP/IP one way rode
+        PORT = 50007
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((HOST, PORT))
+        s.send(arr)
+        print('Finished sending...')
+        s.close()
+        f.closed
+        print('done.')
+
         time.sleep(1)
-        os.remove(name)
-        sys.exit()
-        print "not need to print it"
+        x = x + 1
+        continue
+    ##if the file that pc2 send is a exit file bey bey to this prog.
+    if (comp2Wav("exitFile.wav", name)):
+        os._exit(1)
+
+
+
     # define stream chunk
     chunk = 1024
     # open a wav format music
@@ -97,6 +119,5 @@ while True:
     p.terminate()
 
 
-
-print "goodbye!"
+print "never print it!!!"
 

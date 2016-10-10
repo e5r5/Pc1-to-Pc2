@@ -22,8 +22,6 @@ def sendLastFun():
 def send(n):
     time.sleep(2)
     arr = array('B')  # create binary array to hold the wave file
-     # sample file is in the same folder
-    #name = "FileBack.wav"#+ str(n) +
     name = "File" + str(n) + ".wav"
     result = stat(name)
     f = open(name, 'rb')  # this will send
@@ -43,10 +41,6 @@ def send(n):
 
 
 def TestSendFun():
-    #removeArr = os.listdir(os.getcwd())
-    #for re in removeArr:
-    #    if "file" in re:
-    #        os.remove(re)
     arr = array('B')  # create binary array to hold the wave file
     name = "swapFile.wav"
     result = stat(name)  # sample file is in the same folder

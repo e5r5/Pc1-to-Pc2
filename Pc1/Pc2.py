@@ -15,7 +15,6 @@ def GetArrFromWav(name):
     f = open(name, 'rb')  # this will play
     arr.fromfile(f, result.st_size)  # using file size as the array length
     print("Length of data: " + str(len(arr)))
-    #print arr
     return arr
 
 def comp2Wav(namefile1,nameFile2):
@@ -25,17 +24,8 @@ def comp2Wav(namefile1,nameFile2):
         return False
     else:
         return arr1==arr2 # if is the same vals it is the same
-def gui():
-    root = tk.Tk()
-    root.wm_title("My pro")
-    speaker = tk.PhotoImage(file="speaker.gif")
-    B = tk.Button(root, text ="Hello",width=500, height=500, image=speaker)
-    B.pack()
-    #root.mainloop()
 
-t = threading.Thread(target=gui)
-t.start()
-firstTime = True
+
 global x
 x=1
 
@@ -44,22 +34,22 @@ PORT = 50007  # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 time.sleep(1)
 s.bind((HOST, PORT))
-s.listen(1)
+s.listen(1) # on 127.0.0.1, use on ~~63973
 
 print('Listening...')
 # if firstTime:
 conn, addr = s.accept()
 print('Connected by', addr)
-firstTime = False
-# time.sleep(2)
-# os.remove("newfile.wav")
-# name = "file"+ str(x) + ".wav"
-name = "FileBack.wav"
-outfile = open(name, 'ab')
+
+backNameFile = "FileBack.wav"
+outfile = open(backNameFile, 'wb')
+
+#write this msg until no data
 while True:
     data = conn.recv(1024)
     if not data: break
     outfile.write(data)
+
 
 conn.close()
 outfile.close()

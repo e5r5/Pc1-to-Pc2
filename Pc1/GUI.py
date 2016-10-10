@@ -19,13 +19,10 @@ import sys
 global var
 var = tk.DoubleVar()
 x = 0
+
 # Left Frame and its contents
 leftFrame = tk.Frame(root, width=200, height=600)
 leftFrame.grid(row=0, column=0, padx=10, pady=2)
-
-# tk.Label(leftFrame, text="Instructions:").grid(row=0, column=0, padx=10, pady=2)
-# Instruct = tk.Label(leftFrame, text="1\n2\n2\n3\n4\n5\n6\n7\n8\n9\n")
-# Instruct.grid(row=1, column=0, padx=10, pady=2)
 
 try:
     imageEx = tk.PhotoImage(file='image.gif')
@@ -39,7 +36,6 @@ rightFrame.grid(row=0, column=1, padx=10, pady=5)
 
 circleCanvas = tk.Canvas(rightFrame, width=100, height=100, bg='white')
 circleCanvas.grid(row=0, column=0, padx=10, pady=2)
-
 
 class App():
     def __init__(self):
@@ -109,17 +105,13 @@ def sendLastFun():
 
 def send(n):
     arr = array('B')  # create binary array to hold the wave file
-
-    # sample file is in the same folder
     name = "File" + str(n) + ".wav"
-    result = stat(name)
+    result = stat(name)  # sample file is in the same folder
     f = open(name, 'rb')  # this will send
     arr.fromfile(f, result.st_size)  # using file size as the array length
     # print("Length of data: " + str(len(arr)))
-
     HOST = 'localhost'
     PORT = 50007
-
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
     s.send(arr)
@@ -133,7 +125,7 @@ def AnPlayFun():
         root2 = tk.Tk()
         for i in range(1, x + 1):
             tk.Button(root2, text="Play file " + str(i), padx=20, command=lambda i=i: playNum(i)).grid(row=i, column=0,
-                                                                                                       padx=10, pady=2)
+                                                                                               padx=10, pady=2)
     else:
         colorLog.insert(0.0, "No recorded yet!! " + "\n")
 
@@ -180,7 +172,7 @@ def GetArrFromWav(name):
     # print arr
     return arr
 
-
+# This function compares two files return true if eq. else false
 def comp2Wav(namefile1, nameFile2):
     arr1 = GetArrFromWav(namefile1)
     arr2 = GetArrFromWav(nameFile2)
@@ -189,29 +181,26 @@ def comp2Wav(namefile1, nameFile2):
     else:
         return arr1 == arr2
 
-
+#This function print the Message Box use on comp2Wav function
 def isOK():
+    global x
     name = "File" + str(x) + ".wav"
     if comp2Wav("FileBack.wav", name):
         tkMessageBox.showinfo("!!!!!","Pc2 successfully received the message! ")
     else:
         tkMessageBox.showinfo("!!!!!","Pc2 not received the message! ")
 
-
+#The function take of the important message, sending a swap file to pc2 and than start listening to pc2
 def TestSendFun():
-    # removeArr = os.listdir(os.getcwd())
-    # for re in removeArr:
-    #     if "file" in re:
-    #         os.remove(re)
     arr = array('B')  # create binary array to hold the wave file
     name = "swapFile.wav"
     result = stat(name)  # sample file is in the same folder
-    f = open(name, 'rb')  # this will play
-    arr.fromfile(f, result.st_size)  # using file size as the array length
+    f = open(name, 'rb')  # this will send
+    arr.fromfile(f, result.st_size)  # using file size as the array length/// this is my deepCOPY
     # print("Length of data: " + str(len(arr)))
 
     HOST = 'localhost'  # Loopback to cheak the trans. info use on -IPv4 in TCP/IP one way rode
-    PORT = 50007
+    PORT = 50007  #127.0.0.1
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
@@ -219,23 +208,33 @@ def TestSendFun():
     print('Finish sending swap File...')
     s.close()
     f.closed
-
-    # time.sleep(1)
-    ###Main.StopAll()
-    t3 = threading.Thread(target=StartPC2)
-    t3.start()
-    # time.sleep(2)
+    t3 = threading.Thread(target=StartPC2) ## pc 2 start Listening
+    t3.start() #start thread
 
 
-    # time.sleep(1)
-    # os.exit()
-    # print "not need to print it"
-
-
-def StartPC2():
+def StartPC2(): #start from this Fun
     os.system('python Pc2.py')
 
+#this fun send a exitFile that pc2 know and will exit
+def exitPc2():
+    arr = array('B')  # create binary array to hold the wave file
+    name = "exitFile.wav"
+    result = stat(name)  # sample file is in the same folder
+    f = open(name, 'rb')  # this will play
+    arr.fromfile(f, result.st_size)  # using file size as the array length
+    # print("Length of data: " + str(len(arr)))
 
+    HOST = 'localhost'  # Loopback to cheak the trans. info use on -IPv4 in TCP/IP one way rode
+    PORT = 50007  # 127.0.0.1
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send(arr)
+    print('Finish sending exit File!')
+    s.close()
+    f.closed
+
+## all the gui and the buttons
 btnFrame = tk.Frame(rightFrame, width=200, height=200)
 btnFrame.grid(row=1, column=0, padx=10, pady=2)
 
@@ -257,11 +256,14 @@ playlast.grid(row=0, column=2, padx=10, pady=2)
 photoAnplay = tk.PhotoImage(file="playAn.gif")
 Anplay = tk.Button(btnFrame, text="play another", command=AnPlayFun, image=photoAnplay)
 Anplay.grid(row=0, column=3, padx=10, pady=2)
-phototheTest = tk.PhotoImage(file="theTest.gif")
-photoTestSend = tk.PhotoImage(file="Testsend.gif")
+phototheTest = tk.PhotoImage(file="impMes.gif")
+photoTestSend = tk.PhotoImage(file="msgSend.gif")
 TestSend = tk.Button(btnFrame, text="Test send", command=TestSendFun, image=phototheTest)
 TestSend.grid(row=1, column=2, padx=10, pady=2)
 
+exitPO = tk.PhotoImage(file="exit.gif")
+exit = tk.Button(btnFrame, text="play last", command=exitPc2, image=exitPO)
+exit.grid(row=2, column=2, padx=10, pady=2)
 
 Testrecord = tk.Button(btnFrame, text="Test record", command=lambda: isOK(), image=photoTestSend)
 Testrecord.grid(row=1, column=1, padx=10, pady=2)

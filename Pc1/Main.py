@@ -8,19 +8,16 @@ def MyThread1():
 def MyThread2():
     os.system('python Wave.py')
 
-def MyThread3():
-    print " "
 
-
-global t1, t2, t3
+global t1, t2
 t1 = threading.Thread(target=MyThread1, args=[])
 t2 = threading.Thread(target=MyThread2, args=[])
-t3 = threading.Thread(target=MyThread3, args=[])
+
 
 def startProg():
     t2.start()
     t1.start()
-    t3.start()
+
 
 def StopAll():
     if(t1.is_alive):
