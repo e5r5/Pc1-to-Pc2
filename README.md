@@ -9,6 +9,7 @@
 - Recording by PTT button
 - Send file and play on pc2
 - A confirmation message has been sent!!
+- Send important message
 - And much more
 
 ##![Hello](https://s21.postimg.org/6wt7ac5pj/PC1.png)
